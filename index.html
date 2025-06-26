@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prana.ai - Guided Breathing & Meditation by GreyBrain.ai</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      /* Define default fallbacks - these will be overridden by ThemeProvider */
+      --theme-bg-page: #f9fafb; /* gray-50 */
+      --theme-bg-card: #ffffff;
+      --theme-bg-header: #0d9488; /* teal-600 */
+      --theme-bg-footer: #0f766e; /* teal-700 */
+      --theme-bg-shanti-speaks: #f0fdfa; /* teal-50 */
+      --theme-bg-shanti-avatar: #14b8a6; /* teal-500 */
+      --theme-bg-modal: #ffffff;
+
+      --theme-text-heading: #111827; /* gray-900 */
+      --theme-text-body: #374151; /* gray-700 */
+      --theme-text-muted: #6b7280; /* gray-500 */
+      --theme-text-link: #0e7490; /* cyan-700 */
+      --theme-text-on-primary-action: #ffffff;
+      --theme-text-on-secondary-action: #374151;
+      --theme-text-on-header: #f0fdfa; /* teal-50 */
+      --theme-text-on-footer: #ccfbf1; /* teal-100 */
+      --theme-text-on-shanti-avatar: #ffffff;
+
+      --theme-action-primary-bg: #14b8a6; /* teal-500 */
+      --theme-action-primary-bg-hover: #0d9488; /* teal-600 */
+      --theme-action-primary-text: #ffffff;
+      --theme-action-secondary-bg: #e5e7eb; /* gray-200 */
+      --theme-action-secondary-bg-hover: #d1d5db; /* gray-300 */
+      --theme-action-secondary-text: #1f2937; /* gray-800 */
+      
+      --theme-border-interactive: #9ca3af; /* gray-400 */
+      --theme-border-decorative: #e5e7eb; /* gray-200 */
+      --theme-border-shanti-speaks: #99f6e4; /* teal-200 */
+      
+      --theme-highlight-focus: #2dd4bf; /* teal-400 */
+      --theme-highlight-accent: #14b8a6; /* teal-500 */
+      --theme-highlight-subtle: #ccfbf1; /* teal-100 */
+
+      --theme-animator-expand-contract-bg: #67e8f9; /* cyan-300 */
+      --theme-animator-expand-contract-text: #164e63; /* cyan-900 */
+      --theme-animator-glow-bg: #5eead4; /* teal-300 */
+      --theme-animator-glow-shadow: rgba(74, 222, 128, 0.7);
+      --theme-animator-pulse-border: #9ca3af; /* gray-400 */
+      --theme-animator-pulse-text: #4b5563; /* gray-600 */
+      --theme-animator-nostril-active-bg: #67e8f9; /* cyan-400 */
+      --theme-animator-nostril-inactive-bg: #e5e7eb; /* gray-200 */
+      --theme-animator-ripple-bg: #818cf8; /* indigo-400 */
+      --theme-animator-ripple-border: #a5b4fc; /* indigo-300 */
+      --theme-animator-instructional-bg: #f3f4f6; /* gray-100 */
+      --theme-animator-instructional-border: #e5e7eb; /* gray-200 */
+      --theme-animator-instructional-text: #374151; /* gray-700 */
+      --theme-animator-instructional-accent: #14b8a6; /* teal-500 */
+
+      --theme-icon-primary: #14b8a6; /* teal-500 */
+      --theme-icon-muted: #9ca3af; /* gray-400 */
+      --theme-icon-light: #ccfbf1; /* teal-100 */
+      --theme-icon-brain: #14b8a6; /* teal-500 */
+      --theme-icon-brain-header: #99f6e4; /* teal-200 */
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--theme-bg-page);
+      color: var(--theme-text-body);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <div id="root"></div>
+  
+  <audio id="background-music-player" loop></audio>
+  <audio id="inhale-sound-player"></audio>
+  <audio id="exhale-sound-player"></audio>
+
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Prana.ai",
+  "description": "Shanti, from GreyBrain.ai, guides you through yogic breathing (pranayama) and 'Listen Mode' meditation to cultivate focus, calm, balance, and overall well-being. Personalized sessions for adults and children.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "prompt": ""
+}
