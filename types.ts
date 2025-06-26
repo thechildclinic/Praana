@@ -92,6 +92,42 @@ export interface ModalContent {
 // Voice Context Types
 export type VoiceListeningState = "idle" | "listening" | "processing" | "error";
 
+export interface VoiceSettings {
+  voiceURI: string;
+  name: string;
+  lang: string;
+  rate: number;
+  pitch: number;
+  volume: number;
+}
+
+export interface VoiceProfile {
+  id: string;
+  name: string;
+  description: string;
+  personality: string;
+  preferredLang: string;
+  rate: number;
+  pitch: number;
+  volume: number;
+  voiceURI?: string; // Will be set based on available voices
+}
+
+export interface LanguageOption {
+  code: string;
+  name: string;
+  nativeName: string;
+  flag: string;
+  speechLang: string; // For speech recognition
+  voiceLang: string;  // For speech synthesis
+}
+
+export interface VoiceCommand {
+  command: string;
+  action: string;
+  description: string;
+}
+
 export interface VoiceContextType {
   isSupported: boolean;
   isListening: boolean;
@@ -111,7 +147,16 @@ export interface VoiceContextType {
   permissionStatus: 'prompt' | 'granted' | 'denied';
   requestPermission: () => void;
   speechBlocked: boolean;
-  attemptToUnblockSpeech: () => void; // Added for handling speech blocking
+  attemptToUnblockSpeech: () => void;
+  // Enhanced voice features
+  availableVoices: SpeechSynthesisVoice[];
+  currentVoiceProfile: VoiceProfile;
+  currentLanguage: LanguageOption;
+  voiceProfiles: VoiceProfile[];
+  supportedLanguages: LanguageOption[];
+  setVoiceProfile: (profile: VoiceProfile) => void;
+  setLanguage: (language: LanguageOption) => void;
+  getVoiceCommands: () => VoiceCommand[];
 }
 
 // Common props for stages that can be advanced by tap

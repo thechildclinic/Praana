@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useVoice } from '../VoiceContext';
+import VoiceSettings from './VoiceSettings';
 
 const MicrophoneIcon: React.FC<{className?: string}> = ({className}) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -8,17 +9,27 @@ const MicrophoneIcon: React.FC<{className?: string}> = ({className}) => (
   </svg>
 );
 
+const SettingsIcon: React.FC<{className?: string}> = ({className}) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+  </svg>
+);
+
 const VoiceControl: React.FC = () => {
-  const { 
-    isListening, 
-    isSpeaking, 
-    listeningState, 
-    listen, 
+  const {
+    isListening,
+    isSpeaking,
+    listeningState,
+    listen,
     stopListening,
     permissionStatus,
     requestPermission,
-    isSupported
+    isSupported,
+    currentVoiceProfile,
+    currentLanguage
   } = useVoice();
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleClick = () => {
     if (!isSupported) {
@@ -74,15 +85,45 @@ const VoiceControl: React.FC = () => {
 
 
   return (
-    <button
-      onClick={handleClick}
-      title={statusText}
-      className={`p-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-teal-700 focus:ring-sky-300 transition-colors duration-150 ease-in-out ${bgColor}`}
-      aria-label={statusText}
-      disabled={!isSupported && permissionStatus !== 'prompt'}
-    >
-      <MicrophoneIcon className={`w-5 h-5 ${iconColor}`} />
-    </button>
+    <>
+      <div className="flex items-center space-x-2">
+        {/* Main Voice Control Button */}
+        <button
+          onClick={handleClick}
+          title={statusText}
+          className={`p-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-teal-700 focus:ring-sky-300 transition-colors duration-150 ease-in-out ${bgColor}`}
+          aria-label={statusText}
+          disabled={!isSupported && permissionStatus !== 'prompt'}
+        >
+          <MicrophoneIcon className={`w-5 h-5 ${iconColor}`} />
+        </button>
+
+        {/* Voice Settings Button */}
+        <button
+          onClick={() => setShowSettings(true)}
+          title="Voice Settings"
+          className="p-2.5 rounded-full bg-white/70 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-teal-700 focus:ring-sky-300 transition-colors duration-150 ease-in-out"
+          aria-label="Voice Settings"
+        >
+          <SettingsIcon className="w-5 h-5 text-slate-600" />
+        </button>
+      </div>
+
+      {/* Voice Info Display */}
+      {isSupported && (
+        <div className="mt-2 text-xs text-center">
+          <div className="text-white/80">
+            {currentVoiceProfile.name} • {currentLanguage.flag} {currentLanguage.name}
+          </div>
+        </div>
+      )}
+
+      {/* Voice Settings Modal */}
+      <VoiceSettings
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
+    </>
   );
 };
 

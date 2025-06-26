@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { PranayamaTechnique, TechniquePhase, ExperienceLevel, UserProfile } from '../types';
 import BreathingAnimator from './BreathingAnimator';
 import ShantiSpeaks from './ShantiSpeaks';
+import VoiceCommandFallback from './VoiceCommandFallback';
 import { SHANTI_MESSAGES } from '../constants';
 
 interface PranayamaTechniquePlayerProps {
@@ -500,6 +501,15 @@ const PranayamaTechniquePlayer: React.FC<PranayamaTechniquePlayerProps> = ({
             {nextStepButtonText}
         </button>
       )}
+
+      {/* Voice Command Fallback */}
+      <div className="mt-4">
+        <VoiceCommandFallback
+          onCommand={processVoiceCommand}
+          context="practice"
+          isVisible={true}
+        />
+      </div>
 
       <div className="flex space-x-3 mt-6">
         <button

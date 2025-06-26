@@ -220,7 +220,7 @@ export const SHANTI_MESSAGES: Record<string, string> = {
   micNotAvailableWelcome: `Microphone access is not available. Please tap the screen or use the buttons or text areas provided to interact with ${APP_NAME}.`,
   enableMicWelcome: `Please enable your microphone for voice interaction with ${APP_NAME}, tap the screen, or use the buttons/text areas below.`,
   selectedLevelConfirmation: "Selected: {level}. A good foundation for our work towards focus and balance.",
-  practiceCommandInfo: "Remember, for a hands-free experience to maintain focus, you can say 'pause', 'resume', 'stop', or 'next step'. Tap the screen to pause or resume. If you need assistance, say 'help'.",
+  practiceCommandInfo: "Remember, for a hands-free experience to maintain focus, you can say 'pause', 'resume', 'stop', or 'next step'. Tap the screen to pause or resume. If you need assistance, say 'help'. You can also use the convenient buttons below for easy control.",
   practiceSensorRhythmCheck: "For those using a sensor, observe your breath rhythm. Is it aligning with the guided flow? Adjust gently as needed to find your balance and focus.",
   practiceSensorDepthCheck: "If you have a sensor, note the depth of your breath. Are you breathing fully and comfortably to enhance focus?",
   practiceSensorConsistency: "A sensor might show how consistent your breath is. Aim for smooth, even inhales and exhales to maintain a steady flow for balance and focus.",

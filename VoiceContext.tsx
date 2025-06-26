@@ -6,7 +6,18 @@ import {
   SpeechRecognition,
   SpeechRecognitionEvent,
   SpeechRecognitionErrorEvent,
+  VoiceProfile,
+  LanguageOption,
+  VoiceCommand,
 } from '../types';
+import {
+  VOICE_PROFILES,
+  SUPPORTED_LANGUAGES,
+  VOICE_COMMANDS,
+  findBestVoice,
+  DEFAULT_VOICE_PROFILE,
+  DEFAULT_LANGUAGE
+} from '../voiceConfig';
 
 const VoiceContext = createContext<VoiceContextType | undefined>(undefined);
 
@@ -36,6 +47,13 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
   const [transcript, setTranscript] = useState('');
   const [speechBlocked, setSpeechBlocked] = useState(false);
 
+  // Enhanced voice features
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [currentVoiceProfile, setCurrentVoiceProfile] = useState<VoiceProfile>(DEFAULT_VOICE_PROFILE);
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageOption>(DEFAULT_LANGUAGE);
+  const [voiceProfiles] = useState<VoiceProfile[]>(VOICE_PROFILES);
+  const [supportedLanguages] = useState<LanguageOption[]>(SUPPORTED_LANGUAGES);
+
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const speechSynthesisAPI = useRef<SpeechSynthesis | null>(null);
@@ -53,6 +71,19 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
       recognitionRef.current = new SrAPI();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
+
+      // Load available voices
+      const loadVoices = () => {
+        const voices = speechSynthesisAPI.current?.getVoices() || [];
+        setAvailableVoices(voices);
+        console.log('Available voices loaded:', voices.length);
+      };
+
+      // Load voices immediately and on voiceschanged event
+      loadVoices();
+      if (speechSynthesisAPI.current) {
+        speechSynthesisAPI.current.onvoiceschanged = loadVoices;
+      }
 
       if (navigator.permissions) {
         navigator.permissions.query({ name: 'microphone' as PermissionName }).then(status => {
@@ -112,6 +143,18 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
+
+    // Apply voice profile settings
+    const bestVoice = findBestVoice(availableVoices, currentLanguage, currentVoiceProfile);
+    if (bestVoice) {
+      utterance.voice = bestVoice;
+    }
+
+    utterance.lang = currentLanguage.voiceLang;
+    utterance.rate = currentVoiceProfile.rate;
+    utterance.pitch = currentVoiceProfile.pitch;
+    utterance.volume = currentVoiceProfile.volume;
+
     utteranceRef.current = utterance;
     onEndCallbackRef.current = onEnd;
 
@@ -411,6 +454,7 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
 
     recognitionRef.current.continuous = options?.continuous ?? false;
     recognitionRef.current.interimResults = options?.interimResults ?? false;
+    recognitionRef.current.lang = currentLanguage.speechLang;
 
     if (onStartCallback) onStartCallback();
 
@@ -474,6 +518,47 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
     setListeningState("idle");
   }, [isListening]);
 
+  // Voice profile and language management
+  const setVoiceProfile = useCallback((profile: VoiceProfile) => {
+    setCurrentVoiceProfile(profile);
+    localStorage.setItem('prana-voice-profile', JSON.stringify(profile));
+    console.log('Voice profile changed to:', profile.name);
+  }, []);
+
+  const setLanguage = useCallback((language: LanguageOption) => {
+    setCurrentLanguage(language);
+    localStorage.setItem('prana-language', JSON.stringify(language));
+    console.log('Language changed to:', language.name);
+  }, []);
+
+  const getVoiceCommands = useCallback((): VoiceCommand[] => {
+    return VOICE_COMMANDS;
+  }, []);
+
+  // Load saved preferences on mount
+  useEffect(() => {
+    const savedProfile = localStorage.getItem('prana-voice-profile');
+    const savedLanguage = localStorage.getItem('prana-language');
+
+    if (savedProfile) {
+      try {
+        const profile = JSON.parse(savedProfile);
+        setCurrentVoiceProfile(profile);
+      } catch (e) {
+        console.warn('Failed to load saved voice profile');
+      }
+    }
+
+    if (savedLanguage) {
+      try {
+        const language = JSON.parse(savedLanguage);
+        setCurrentLanguage(language);
+      } catch (e) {
+        console.warn('Failed to load saved language');
+      }
+    }
+  }, []);
+
 
   const contextValue: VoiceContextType = {
     isSupported,
@@ -489,6 +574,15 @@ export const VoiceProvider: React.FC<VoiceProviderProps> = ({ children }) => {
     cancelSpeech,
     speechBlocked,
     attemptToUnblockSpeech,
+    // Enhanced voice features
+    availableVoices,
+    currentVoiceProfile,
+    currentLanguage,
+    voiceProfiles,
+    supportedLanguages,
+    setVoiceProfile,
+    setLanguage,
+    getVoiceCommands,
   };
 
   return <VoiceContext.Provider value={contextValue}>{children}</VoiceContext.Provider>;
