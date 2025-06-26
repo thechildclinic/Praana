@@ -1,74 +1,40 @@
 [build]
-  # Build command for Vite
-  command = "npm run build"
-  
-  # Directory to publish (Vite default output)
-  publish = "dist"
-  
-  # Node.js version
-  environment = { NODE_VERSION = "18" }
+command = "npm run build"
+publish = "dist"
 
 [build.environment]
-  # Environment variables will be set in Netlify dashboard
-  # GEMINI_API_KEY = "your-api-key-here" (set this in Netlify dashboard)
+NODE_VERSION = "18"
 
-# SPA routing - redirect all routes to index.html
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Security headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    # Basic security headers
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    
-    # Content Security Policy (adjusted for the app's needs)
-    Content-Security-Policy = """
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://cdn.tailwindcss.com;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https:;
-      media-src 'self';
-      connect-src 'self' https://generativelanguage.googleapis.com;
-      worker-src 'self';
-    """
-
-# Cache static assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Cache audio files
-[[headers]]
-  for = "*.mp3"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000"
-
-# Cache CSS and JS files
-[[headers]]
-  for = "*.css"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000"
+from = "/*"
+to = "/index.html"
+status = 200
 
 [[headers]]
-  for = "*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000"
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+X-XSS-Protection = "1; mode=block"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com; worker-src 'self';"
 
-# Functions configuration (if needed in future)
-[functions]
-  directory = "netlify/functions"
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
 
-# Dev server configuration for local development
-[dev]
-  command = "npm run dev"
-  port = 5173
-  publish = "dist"
+[[headers]]
+for = "*.mp3"
+[headers.values]
+Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+for = "*.css"
+[headers.values]
+Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+for = "*.js"
+[headers.values]
+Cache-Control = "public, max-age=31536000"
