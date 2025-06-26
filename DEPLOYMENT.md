@@ -29,13 +29,32 @@ Before deployment, you MUST add these audio files to the `assets/audio/` directo
 
 ## 🌐 Netlify Deployment Steps
 
-### Method 1: Git Integration (Recommended)
+### Method 1: Automated Script (Easiest)
+
+Use the provided deployment script:
+
+```bash
+# Make script executable (if not already)
+chmod +x deploy.sh
+
+# Run the deployment script
+./deploy.sh
+```
+
+The script will:
+- Install dependencies
+- Build the project
+- Install Netlify CLI if needed
+- Deploy to Netlify
+- Provide the live URL
+
+### Method 2: Git Integration (Recommended for Continuous Deployment)
 
 1. **Connect Repository**
-   - Log into Netlify Dashboard
+   - Log into [Netlify Dashboard](https://app.netlify.com)
    - Click "New site from Git"
-   - Choose your Git provider (GitHub, GitLab, Bitbucket)
-   - Select the prana.ai repository
+   - Choose GitHub
+   - Select the repository: `thechildclinic/Praana`
 
 2. **Configure Build Settings**
    - Build command: `npm run build`
@@ -51,7 +70,27 @@ Before deployment, you MUST add these audio files to the `assets/audio/` directo
    - Click "Deploy site"
    - Wait for build to complete
 
-### Method 2: Manual Deploy
+### Method 3: Netlify CLI (Manual)
+
+```bash
+# Install Netlify CLI globally
+npm install -g netlify-cli
+
+# Login to Netlify
+netlify login
+
+# Build the project
+npm install
+npm run build
+
+# Deploy (draft first)
+netlify deploy --dir=dist
+
+# Deploy to production
+netlify deploy --prod --dir=dist
+```
+
+### Method 4: Manual Deploy
 
 1. **Build Locally**
    ```bash
@@ -61,7 +100,7 @@ Before deployment, you MUST add these audio files to the `assets/audio/` directo
 
 2. **Deploy dist folder**
    - Drag and drop the `dist` folder to Netlify dashboard
-   - Or use Netlify CLI: `netlify deploy --prod --dir=dist`
+   - Or zip the `dist` folder and upload
 
 ## 🔧 Configuration Files
 
